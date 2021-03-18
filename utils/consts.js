@@ -1,13 +1,13 @@
 const LOCATION_ENUM = [
-  "Berlin",
+  "Berlin", //
   "Amsterdam",
-  "Den Haag",
-  "Canary Islands",
-  "Madrid",
-  "Nuremberg",
-  "Africa",
-  "Utrecht",
-  "Dubai",
+  "Den Haag", // Singing in the Rain
+  "Canary Islands", //
+  "Madrid", //
+  "Nuremberg", //
+  "Africa", //
+  "Utrecht", //
+  "Dubai", //
 ];
 
 module.exports = LOCATION_ENUM;

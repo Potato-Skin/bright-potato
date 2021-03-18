@@ -1,0 +1,12 @@
+{{#if eventList}}
+<h1>All of the events in the mutha kraka world</h1>
+{{#each eventList}}
+<a href="/events/{{this.slug}}">
+  <p>{{this.name}}</p>
+</a>
+{{/each}}
+{{else}}
+<h1>No events in this mutha kraka wordl were found</h1>
+<p>No events found. Try again</p>
+<a href="/">Click here</a>
+{{/if}}

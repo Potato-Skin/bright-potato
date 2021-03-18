@@ -1,17 +1,7 @@
 const mongoose = require("mongoose");
+const LOCATION_ENUM = require("../utils/consts");
 
 const { Schema, model } = mongoose;
-
-const LOCATION_ENUM = [
-  "Berlin",
-  "Amsterdam",
-  "Den Haag",
-  "Canary Islands",
-  "Madrid",
-  "Nuremberg",
-  "Africa",
-  "Utrecht",
-];
 
 const eventSchema = new Schema({
   name: {

@@ -11,6 +11,18 @@ router.get("/", (req, res) => {
   });
 });
 
+router.get("/lucky", (req, res) => {
+  Event.count().then((countOfEvents) => {
+    const randomNumber = Math.floor(Math.random() * countOfEvents);
+    Event.findOne()
+      .skip(randomNumber)
+      .then((singleRandom) => {
+        res.redirect(`/events/${singleRandom.slug}`); // redirected to the event page
+        // res.render("single-event", { event: singleRandom }); // just display the data
+      });
+  });
+});
+
 router.get("/all", (req, res) => {
   Event.find({}).then((allEvents) => {
     res.render("eventPage", { eventList: allEvents });

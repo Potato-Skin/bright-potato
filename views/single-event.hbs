@@ -1,9 +1,10 @@
 {{#if event}}
 {{#with event}}
+<h1>{{this.name}}</h1>
 {{this.description}}
 
 {{/with}}
 {{else}}
 <p>Oh oh. This event does not exist. 😅. Oopsie. Perhaps you can create it yourself. Have fun, and click <a
-    href="/events/new">here</a></p>
+        href="/events/new">here</a></p>
 {{/if}}

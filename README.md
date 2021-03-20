@@ -6,7 +6,7 @@ Models (Super or Not)
 
 User
    email -> String (required, unique) -> // !TODO Validation
-   password -> String (required, minChar (8))
+   password -> String (required, minChar (8)) // sdflkjhsdfjg2342.@adsfogi1!ksdflkghadsfklghdsfgdsgdsfgdsfgsd
    name -> String (required)
    username -> String (required, unique)
    location (ENUM: Berlin, Amsterdam, Den Haag, Canary Islands, Madrid, Dubai, Nuremberg, Africa, Utrecht)

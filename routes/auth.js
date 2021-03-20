@@ -48,7 +48,35 @@ router.get("/signup", (req, res) => {
 });
 
 router.post("/signup", (req, res) => {
+  /* 
+  req.body = {
+    name: "askdjfhasdfk",
+    username: "askdjfhsadf",
+    email: "asldkjy239485",
+    password:"123456789"
+  }
+
+  const name = req.body.name
+  const username = req.body.username
+  const email = req.body.email
+  const password = req.body.password
+
+  const { name, username, email, password} = req.body
+   */
   const { name, username, email, password } = req.body;
+
+  if (!name || !email || !username) {
+    res.render("signup", { errorMessage: "Please fill out all of the fields" });
+    return;
+  }
+
+  if (password.length < 8) {
+    res.render("signup", {
+      errorMessage: "Password needs to be at least 8 characters long",
+    });
+    return;
+  }
+
   console.log("req.body:", req.body);
   User.findOne({ $or: [{ username }, { email }] })
     .then((found) => {
@@ -112,6 +140,7 @@ router.post("/login", (req, res) => {
 
 router.get("/logout", (req, res) => {
   req.session.destroy((err) => {
+    res.clearCookie("connect.sid");
     res.redirect("/");
   });
 });

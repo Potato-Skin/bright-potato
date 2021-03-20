@@ -49,7 +49,7 @@ module.exports = (app) => {
 
   app.use(
     session({
-      secret: "mufasa",
+      secret: process.env.SESSION_SECRET || "mufasa",
       resave: false,
       saveUninitialized: false,
       store: MongoStore.create({

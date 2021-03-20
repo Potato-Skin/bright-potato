@@ -13,6 +13,15 @@
    <nav>
       <h1><a href="/">HOOOOOOOOOMMEE</a></h1>
    </nav>
+   {{#if user}}
+   <h4>Welcome {{user.name}}</h4>
+   <a href="/auth/logout">Logout</a>
+   {{else}}
+   <nav>
+      <a href="/auth/signup">Signup</a>
+      <a href="/auth/login">Login</a>
+   </nav>
+   {{/if}}
    {{{body}}}
 
    <script src="/js/script.js"></script>

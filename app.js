@@ -41,6 +41,9 @@ const eventRoutes = require("./routes/events");
 
 app.use("/events", eventRoutes);
 
+const profileRoutes = require("./routes/profile");
+app.use("/profile", profileRoutes);
+
 // http://localhost:3000/auth/signup
 // const authRoutes = require("./routes/auth");
 // app.use("/auth", authRoutes);

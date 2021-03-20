@@ -1,0 +1,19 @@
+<form action="/auth/signup" method="POST">
+  <input type="text" name="name" placeholder="Name" required>
+  <input type="text" name="username" placeholder="Username" required>
+  <input type="email" name="email" required placeholder="Email">
+  <input type="password" name="password" placeholder="Password" required>
+  <button type="submit">Sign up</button>
+</form>
+
+{{#if errorMessage}}
+<h1 style="color: red;">{{errorMessage}}</h1>
+{{/if}}
+
+{{!-- email -> String (required, unique) -> // !TODO Validation
+password -> String (required, minChar (8)) // sdflkjhsdfjg2342.@adsfogi1!ksdflkghadsfklghdsfgdsgdsfgdsfgsd
+name -> String (required)
+username -> String (required, unique)
+location (ENUM: Berlin, Amsterdam, Den Haag, Canary Islands, Madrid, Dubai, Nuremberg, Africa, Utrecht)
+shortBio -> String
+profilePic -> String, (required) -> set default --}}

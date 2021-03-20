@@ -7,6 +7,11 @@ const userSchema = new Schema({
     type: String,
     unique: true,
   },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   password: {
     type: String,
     required: true,
@@ -30,7 +35,8 @@ const userSchema = new Schema({
   },
   profilePic: {
     type: String,
-    default: "",
+    default:
+      "https://res.cloudinary.com/dlfxinw9v/image/upload/v1616236239/britato_g3sglf.png",
   },
 });
 

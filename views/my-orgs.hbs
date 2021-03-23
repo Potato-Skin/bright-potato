@@ -1,0 +1,26 @@
+<h1>My organizations page</h1>
+
+
+<h2>Creator</h2>
+{{#unless owner}}
+Please create a <a href="/organization/new">new organization</a>
+{{/unless}}
+
+{{#if owner}}
+{{#each owner}}
+
+<a href="/organization/{{this._id}}">{{this.name}}</a>
+{{/each }}
+{{/if}}
+<br>
+<h2>Member</h2>
+{{#unless member}}
+Please join a <a href="/organization/new">new organization</a>
+{{/unless}}
+
+{{#if member}}
+{{#each member}}
+
+<a href="/organization/{{this._id}}">{{this.name}}</a>
+{{/each }}
+{{/if}}

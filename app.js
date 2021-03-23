@@ -25,6 +25,13 @@ const capitalized = (string) =>
 
 app.locals.title = `${capitalized(projectName)} - Generated with IronLauncher`;
 
+app.use((req, res, next) => {
+  if (req.session.user) {
+    res.locals.user = req.session.user;
+  }
+  next();
+});
+
 // app.use((req, res, next) => {
 //   console.log("REQUEST DONE TO ", req.url);
 //   next();
@@ -43,6 +50,9 @@ app.use("/events", eventRoutes);
 
 const profileRoutes = require("./routes/profile");
 app.use("/profile", profileRoutes);
+
+const organizationRoutes = require("./routes/organization");
+app.use("/organization", organizationRoutes);
 
 // http://localhost:3000/auth/signup
 // const authRoutes = require("./routes/auth");

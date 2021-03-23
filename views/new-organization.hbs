@@ -1,0 +1,31 @@
+<form action="/organization/new" method="POST">
+  <label for="name">Write the organization's name</label>
+  <br>
+  <br>
+  <input type="text" name="name" id="name" placeholder="Name for your organization">
+
+  <br>
+  <br>
+  <label for="motto">Write the organization's motto</label>
+  <br>
+  <br>
+  <input type="text" name="description" id="motto" placeholder="Describe your organization">
+
+  <br>
+  <br>
+
+  <label for="location">Pick the location</label>
+  <select name="location" id="location">
+    {{#each locations}}
+    <option value="{{this}}">{{this}}</option>
+    {{/each}}
+  </select>
+  <br>
+  <br>
+  <button type="submit">Create your organization</button>
+
+</form>
+
+{{#if errorMessage}}
+<h5>{{errorMessage}}</h5>
+{{/if}}

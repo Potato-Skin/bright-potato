@@ -15,7 +15,12 @@
    </nav>
    {{#if user}}
    <h4>Welcome {{user.name}}</h4>
-   <a href="/auth/logout">Logout</a>
+   <br>
+   <nav class="navbar" style="background-color: black">
+
+      <a href="/organization/my-organization">My Orgs</a>
+      <a href="/auth/logout">Logout</a>
+   </nav>
    {{else}}
    <nav>
       <a href="/auth/signup">Signup</a>

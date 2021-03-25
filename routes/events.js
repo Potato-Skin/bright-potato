@@ -33,10 +33,8 @@ router.get("/all", (req, res) => {
 router.get("/:dynamicGorilla", (req, res) => {
   Event.findOne({ slug: req.params.dynamicGorilla }).then((thatSingleEvent) => {
     console.log("thatSingleEvent:", thatSingleEvent);
-    res.render("single-event", { event: thatSingleEvent });
+    res.render("events/single-event", { event: thatSingleEvent });
   });
 });
-
-// router.get("/lucky")
 
 module.exports = router;

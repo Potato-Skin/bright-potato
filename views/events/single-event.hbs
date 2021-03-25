@@ -1,0 +1,12 @@
+{{#if event}}
+{{#with event}}
+<h1>{{this.name}}</h1>
+<img src="{{this.mainPic}}" alt="this.name">
+<p> {{this.description}} </p>
+
+{{/with}}
+{{else}}
+<p>Oh oh. This event does not exist. 😅. Oopsie. Perhaps you can create it yourself. Have fun, and click
+        <a href="/events/new">here</a>
+</p>
+{{/if}}

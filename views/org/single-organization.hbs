@@ -1,0 +1,11 @@
+{{#if isOwner}}
+<a href='/organization/{{organization._id}}/edit'>Edit the organization</a>
+<br>
+<a href="/organization/{{organization._id}}/create">Create an event</a>
+{{/if}}
+
+{{#with organization}}
+<h3>{{this.name}}</h3>
+
+<p>{{this.description}}</p>
+{{/with}}

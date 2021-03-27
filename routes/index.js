@@ -1,4 +1,6 @@
 const router = require("express").Router();
+const axios = require("axios");
+const { response } = require("express");
 
 /* GET home page */
 router.get("/", (req, res, next) => {
@@ -7,7 +9,16 @@ router.get("/", (req, res, next) => {
   //   user = req.session.user;
   // }
   // res.render("index", { user });
-  res.render("index"); // no longer necessary to send user. its being sent in the middleware in app.js -> res.locals.user
+  axios.get("https://officeapi.dev/api/quotes/random").then((response) => {
+    // axios
+    // .get("https://rickandmortyapi.com/api/character")
+    // .then((responseFromRick) => {
+    // const images = responseFromRick.data.results.map((e) => e.image);
+    res.render("index", { quote: response.data.data.content });
+    // });
+    console.log("response:", response.data);
+    // no longer necessary to send user. its being sent in the middleware in app.js -> res.locals.user
+  });
 });
 
 module.exports = router;

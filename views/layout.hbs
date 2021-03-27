@@ -7,6 +7,11 @@
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <title>{{title}}</title>
    <link rel="stylesheet" href="/stylesheets/style.css" />
+   {{#with user}}
+   {{#if prefersDarkMode}}
+   <link rel="stylesheet" href="/stylesheets/dark.css">
+   {{/if}}
+   {{/with}}
 </head>
 
 <body>
@@ -15,6 +20,8 @@
    </nav>
    {{#if user}}
    <h4>Welcome {{user.name}}</h4>
+   <br>
+   <a href="/profile">Go to profile</a>
    <br>
    <nav class="navbar" style="background-color: black">
 

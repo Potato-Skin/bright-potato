@@ -38,6 +38,10 @@ const userSchema = new Schema({
     default:
       "https://res.cloudinary.com/dlfxinw9v/image/upload/v1616236239/britato_g3sglf.png",
   },
+  prefersDarkMode: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const User = model("User", userSchema);

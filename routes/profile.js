@@ -6,7 +6,7 @@ const User = require("../models/User.model");
 // router.use(isLoggedMiddleware)
 
 router.get("/", isLoggedMiddleware, (req, res) => {
-  console.log("req.session.user", req.session.user);
+  // console.log("req.session.user", req.session.user);
 
   res.render("profile", { user: req.session.user });
 });
@@ -23,8 +23,22 @@ router.post("/edit", isLoggedMiddleware, (req, res) => {
     { name, shortBio: bio },
     { new: true }
   ).then((newUser) => {
-    console.log("newUser:", newUser);
+    // console.log("newUser:", newUser);
     req.session.user = newUser;
+    res.redirect("/profile");
+  });
+});
+
+router.get("/dark-mode", isLoggedMiddleware, (req, res) => {
+  User.findByIdAndUpdate(
+    req.session.user._id,
+    {
+      prefersDarkMode: !req.session.user.prefersDarkMode,
+    },
+    { new: true }
+  ).then((updatedUser) => {
+    console.log("updatedUser:", updatedUser);
+    req.session.user = updatedUser;
     res.redirect("/profile");
   });
 });

@@ -1,7 +1,16 @@
 const router = require("express").Router();
 const axios = require("axios");
-const { response } = require("express");
 
+axios
+  .get(
+    `https://api.openweathermap.org/data/2.5/weather?q=Lisbon&appid=${process.env.WEATHER_API_KEY}&units=metric`
+  )
+  .then((r) => {
+    console.log("r:", r.data);
+  })
+  .catch((err) => {
+    console.log("err:", err.message);
+  });
 /* GET home page */
 router.get("/", (req, res, next) => {
   // let user;

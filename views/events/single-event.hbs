@@ -10,3 +10,10 @@
         <a href="/events/new">here</a>
 </p>
 {{/if}}
+
+
+{{#if isOrganizingMember}}
+
+<a href="/events/{{event._id}}/delete" style="color: white; background: red; padding: 0.5 rem 1rem">Delete this
+        event</a>
+{{/if}}

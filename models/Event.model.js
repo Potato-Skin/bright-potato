@@ -3,6 +3,10 @@ const LOCATION_ENUM = require("../utils/consts");
 
 const { Schema, model } = mongoose;
 
+// Databases
+// Collections
+// Documents
+
 const eventSchema = new Schema({
   name: {
     type: String,
@@ -23,7 +27,7 @@ const eventSchema = new Schema({
   mainPic: {
     type: String,
     default:
-      "https://lh3.googleusercontent.com/proxy/hbCXvhWK_5G50PzTD6u7O0HNcvhZzWMIX7jwRH5zNF-l9Ou5nGgWB0JPTIaNtfb_kJQbNWzek5KJ2lXiJ5PAffhQQRY0aPm5-gw9R_xRaxzaBvhDol9Nf_Xh-I-2uiXfFQl9",
+      "https://res.cloudinary.com/dlfxinw9v/image/upload/v1616837651/event_image_npqdmv.png",
   },
   organizer: {
     type: Schema.Types.ObjectId,

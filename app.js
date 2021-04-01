@@ -20,11 +20,12 @@ require("./config")(app);
 
 // default value for title local
 const projectName = "potatobrite";
-const capitalized = (string) =>
-  string[0].toUpperCase() + string.slice(1).toLowerCase();
+const capitalized = string => string[0].toUpperCase() + string.slice(1).toLowerCase();
 
 app.locals.title = `${capitalized(projectName)} - Generated with IronLauncher`;
 
+// Making a random change
+// Added another line
 app.use((req, res, next) => {
   if (req.session.user) {
     res.locals.user = req.session.user;

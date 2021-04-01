@@ -25,6 +25,7 @@ const capitalized = string => string[0].toUpperCase() + string.slice(1).toLowerC
 app.locals.title = `${capitalized(projectName)} - Generated with IronLauncher`;
 
 // Making a random change
+// Added another line
 app.use((req, res, next) => {
   if (req.session.user) {
     res.locals.user = req.session.user;

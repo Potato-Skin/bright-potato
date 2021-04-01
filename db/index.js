@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 
 const MONGO_URI = process.env.MONGODB_URI || 'mongodb://localhost/potatobrite';
 
-// HELLO from the outside. Adele 2010s
+// HELLO from the outside. Adele 2010s were AMAZZZIIIIING
 mongoose
   .connect(MONGO_URI, {
     useNewUrlParser: true,

@@ -4,6 +4,7 @@ const isLoggedMiddleware = require("../middlewares/MustBeLoggedIn");
 const Organization = require("../models/Organization.model");
 const Event = require("../models/Event.model");
 const slugify = require("slugify");
+const parser = require("../config/cloudinary");
 
 const router = express.Router();
 
@@ -152,41 +153,49 @@ router.get("/:carrots/create", isLoggedMiddleware, (req, res) => {
 
 //
 
-router.post("/:orgId/create", isLoggedMiddleware, (req, res) => {
-  //
-  Organization.findOne({
-    _id: req.params.orgId,
-    members: { $in: req.session.user._id },
-  }).then((organizationExists) => {
-    if (!organizationExists) {
-      return res.redirect("/");
-    }
-    const { name, date, venue, maxAttendees, fee, description } = req.body;
+router.post(
+  "/:orgId/create",
+  isLoggedMiddleware,
+  parser.single("image"),
+  (req, res) => {
+    console.log(req.file);
+    const mainPic = req.file.path;
+    //
+    Organization.findOne({
+      _id: req.params.orgId,
+      members: { $in: req.session.user._id },
+    }).then((organizationExists) => {
+      if (!organizationExists) {
+        return res.redirect("/");
+      }
+      const { name, date, venue, maxAttendees, fee, description } = req.body;
 
-    const slug = slugify(name, {
-      lower: true,
-    });
-
-    Event.create({
-      name,
-      date,
-      venue,
-      maxAttendees,
-      fee,
-      description,
-      slug,
-      organizer: organizationExists._id,
-      attendees: [req.session.user._id],
-    })
-      .then((createdEvent) => {
-        console.log("createdEvent:", createdEvent);
-        res.redirect(`/events/${createdEvent.slug}`);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.redirect(`/organization/${req.params.orgId}/create`);
+      const slug = slugify(name, {
+        lower: true,
       });
-  });
-});
+
+      Event.create({
+        name,
+        date,
+        venue,
+        maxAttendees,
+        fee,
+        description,
+        slug,
+        mainPic,
+        organizer: organizationExists._id,
+        attendees: [req.session.user._id],
+      })
+        .then((createdEvent) => {
+          console.log("createdEvent:", createdEvent);
+          res.redirect(`/events/${createdEvent.slug}`);
+        })
+        .catch((err) => {
+          console.log(err);
+          res.redirect(`/organization/${req.params.orgId}/create`);
+        });
+    });
+  }
+);
 
 module.exports = router;

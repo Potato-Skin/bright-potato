@@ -1,12 +1,13 @@
 <h1>You are about to create one event under the {{name}}'s organization</h1>
 
-<form action="/organization/{{orgId}}/create" method="POST">
+<form action="/organization/{{orgId}}/create" method="POST" enctype="multipart/form-data">
   <input type="text" name="name" placeholder="The name">
   <input type="datetime-local" name="date">
-  <input type="text" name="venue" required placeholder="The venue">
+  <input type="text" name="venue" placeholder="The venue">
   <input type="number" name="maxAttendees" min="0" placeholder="The maxAttendees">
   <input type="text" name="fee" placeholder="The fee">
   <input type="text" name="description" min="20" placeholder="The description">
+  <input type="file" name="image">
 
   <button type="submit">Create an event</button>
 </form>

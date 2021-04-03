@@ -176,6 +176,7 @@ router.post("/:orgId/create", isLoggedMiddleware, (req, res) => {
       description,
       slug,
       organizer: organizationExists._id,
+      attendees: [req.session.user._id],
     })
       .then((createdEvent) => {
         console.log("createdEvent:", createdEvent);

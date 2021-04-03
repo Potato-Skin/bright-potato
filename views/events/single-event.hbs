@@ -10,7 +10,39 @@
         <a href="/events/new">here</a>
 </p>
 {{/if}}
+{{#if rating}}
+This event is rated as {{rating}} stars
+{{/if}}
 
+
+{{#if isNotGoingToEventYet}}
+<a href="/events/{{event._id}}/join">Join event</a>
+{{/if}}
+
+{{#if isMember}}
+<form method="POST" action="/events/{{event._id}}/rating">
+        <label for="rating">How fun was this event</label>
+        <select name="rating" id="rating">
+                <option value="1">1*</option>
+                <option value="2">2*</option>
+                <option value="3">3*</option>
+                <option value="4">4*</option>
+                <option value="5">5*</option>
+        </select>
+
+        <button type="submit">Create a rating</button>
+</form>
+{{/if}}
+
+
+{{#if canLeaveEvent}}
+
+
+
+<a href="/events/{{event._id}}/leave">I dont want to do this anymore. I dont want to be the reason why</a>
+
+
+{{/if}}
 
 {{#if isOrganizingMember}}
 

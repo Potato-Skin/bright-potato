@@ -36,23 +36,56 @@ router.get("/all", (req, res) => {
 router.get("/:dynamicGorilla", (req, res) => {
   Event.findOne({ slug: req.params.dynamicGorilla })
     .populate("organizer")
+    .populate("attendees")
     .then((thatSingleEvent) => {
+      // console.log("thatSingleEvent:", thatSingleEvent);
+      console.log("BREAKING CODE");
       if (!thatSingleEvent) {
         return goHomeYoureDrunk(res);
       }
 
       let isOrganizingMember;
+      let isNotGoingToEventYet;
+      let canLeaveEvent;
+      let isMember;
 
       if (req.session.user) {
         if (thatSingleEvent.organizer.members.includes(req.session.user._id)) {
           isOrganizingMember = true;
         }
+
+        const isInAttendees = thatSingleEvent.attendees.find((user) => {
+          return user.username === req.session.user.username;
+        });
+
+        if (!isInAttendees) {
+          isNotGoingToEventYet = true;
+        }
+        if (isInAttendees && !isOrganizingMember) {
+          canLeaveEvent = true;
+        }
+
+        if (isInAttendees) {
+          isMember = true;
+        }
       }
+
+      const sum = thatSingleEvent.ratings.reduce((acc, val) => {
+        return acc + val;
+      }, 0);
+
+      // sum ? -> checks if number is not 0
+
+      const rating = sum ? sum / thatSingleEvent.ratings.length : 0;
 
       // console.log("thatSingleEvent:", thatSingleEvent);
       res.render("events/single-event", {
         event: thatSingleEvent,
         isOrganizingMember,
+        isNotGoingToEventYet,
+        canLeaveEvent,
+        isMember,
+        rating,
       });
     });
 });
@@ -61,7 +94,7 @@ router.get("/:dynamic/delete", isLoggedMiddleware, (req, res) => {
   Event.findById(req.params.dynamic)
     .populate("organizer")
     .then((event) => {
-      console.log("event:", event);
+      // console.log("event:", event);
       if (!event) {
         return goHomeYoureDrunk(res);
       }
@@ -81,5 +114,143 @@ router.get("/:dynamic/delete", isLoggedMiddleware, (req, res) => {
       });
     });
 });
+
+router.get(
+  "/:dynamic/join",
+  isLoggedMiddleware,
+  eventExistsMiddleware,
+  (req, res) => {
+    Event.findById(req.params.dynamic)
+      .populate("attendees")
+      .then((foundEvent) => {
+        if (!foundEvent) {
+          return goHomeYoureDrunk(res);
+        }
+
+        const isInEventAlready = foundEvent.attendees.find(
+          (user) => user.username === req.session.user.username
+        );
+        if (isInEventAlready) {
+          return res.redirect(`/events/${foundEvent.slug}`);
+        }
+
+        if (foundEvent.attendees.length >= foundEvent.maxAttendees) {
+          return res.redirect(`/events/${foundEvent.slug}`);
+        }
+        // {
+        //   $push: {attendees: req.session.user._id}
+        // }
+
+        // IF we reach here, we can join the event
+        Event.findByIdAndUpdate(
+          foundEvent._id,
+          {
+            $addToSet: { attendees: req.session.user._id },
+          },
+          { new: true }
+        ).then((updatedEvent) => {
+          console.log("updatedEvent:", updatedEvent);
+          return res.redirect(`/events/${foundEvent.slug}`);
+        });
+      });
+  }
+);
+
+function eventExistsMiddleware(req, res, next) {
+  Event.findById(req.params.dynamic)
+    .populate("attendees")
+    .populate("organizer")
+    .then((foundEvent) => {
+      if (!foundEvent) {
+        return goHomeYoureDrunk(res);
+      }
+      req.event = foundEvent;
+      next();
+    });
+}
+
+router.get(
+  "/:dynamic/leave",
+  isLoggedMiddleware,
+  eventExistsMiddleware,
+  (req, res) => {
+    const foundEvent = req.event;
+    const isInEvent = req.event.attendees.find(
+      (user) => user.username === req.session.user.username
+    );
+    if (!isInEvent) {
+      return res.redirect(`/events/${foundEvent.slug}`);
+    }
+
+    Event.findByIdAndUpdate(
+      foundEvent._id,
+      {
+        $pull: { attendees: req.session.user._id },
+      },
+      { new: true }
+    ).then((updated) => {
+      console.log("updated:", updated);
+      res.redirect(`/events/${updated.slug}`);
+    });
+
+    // Event.findById(req.params.dynamic)
+    //   .populate("attendees")
+    //   .then((foundEvent) => {
+    //     if (!foundEvent) {
+    //       return goHomeYoureDrunk(res);
+    //     }
+
+    //     const isInEvent = foundEvent.attendees.find(
+    //       (user) => user.username === req.session.user.username
+    //     );
+
+    //     if (!isInEvent) {
+    //       return res.redirect(`/events/${foundEvent.slug}`);
+    //     }
+
+    //     Event.findByIdAndUpdate(
+    //       foundEvent._id,
+    //       {
+    //         $pull: { attendees: req.session.user._id },
+    //       },
+    //       { new: true }
+    //     ).then((updated) => {
+    //       // console.log("updated:", updated);
+    //       res.redirect(`/events/${updated.slug}`);
+    //     });
+    //   });
+  }
+);
+
+router.post(
+  "/:dynamic/rating",
+  isLoggedMiddleware,
+  eventExistsMiddleware,
+  (req, res) => {
+    console.log(req.body); // -> {rating: number} -> rating: "number"
+    const rating = +req.body.rating;
+    if (!rating) {
+      // if rating is NaN because some hacker tried to send us a request from something like postman with a body of rating: bananas
+      return goHomeYoureDrunk(res);
+    }
+    if (rating > 5 || rating < 1) {
+      return goHomeYoureDrunk(res);
+    }
+
+    Event.findByIdAndUpdate(
+      req.event._id,
+      {
+        $push: { ratings: rating },
+      },
+      { new: true }
+    ).then((updated) => {
+      console.log("updated:", updated);
+      res.redirect(`/events/${updated.slug}`);
+    });
+  }
+);
+
+// [1, 1, 1] -> $push
+// [1] -> $addToSet
 
 module.exports = router;

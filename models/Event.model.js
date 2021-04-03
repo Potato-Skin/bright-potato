@@ -48,6 +48,12 @@ const eventSchema = new Schema({
     type: String,
     min: 20,
   },
+  ratings: [
+    {
+      type: Number,
+      default: 3,
+    },
+  ],
 });
 
 const Event = model("Event", eventSchema);

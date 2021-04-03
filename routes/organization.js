@@ -8,31 +8,55 @@ const parser = require("../config/cloudinary");
 
 const router = express.Router();
 
+const asyncFunc = async () => {};
+
+async function asyncFunc2() {}
 // router.get("/baroongaroognga-chungachunga", (req, res) => {
-router.get("/my-organization", isLoggedMiddleware, (req, res) => {
+router.get("/my-organization", isLoggedMiddleware, async (req, res) => {
   // EVERYONE WHERE I AM THE OWNER
-  Organization.find({ owner: req.session.user._id }).then((whereIamOwner) => {
-    Organization.find({
+  try {
+    const whereIAmOwner = await Organization.find({
+      owner: req.session.user._id,
+    });
+    const whereIAmNotOwner = await Organization.find({
       $and: [
         { owner: { $ne: req.session.user._id } },
         { members: { $in: req.session.user._id } },
       ],
-    }).then((whereIAmNotOwner) => {
-      console.log("owner: ", whereIamOwner);
-      console.log("nicht owner: ", whereIAmNotOwner);
-      res.render("my-orgs", { owner: whereIamOwner, member: whereIAmNotOwner });
-
-      // {{!-- {{#unless}} --}}
-
-      // {{!-- {{#if owner}}
-      // {{!-- USER HAS MULTIPLE (OR ONE) ORG WHERE IS OWNER --}}
-      // {{else}}
-
-      // {{!-- USER DOENST OWN ANY ORG --}}
-      // {{/if}} --}}
     });
-  });
+    res.render("my-orgs", { owner: whereIAmOwner, member: whereIAmNotOwner });
+  } catch (error) {
+    // code failed
+    console.log(error);
+  }
+  // Organization.find({ owner: req.session.user._id }).then((whereIamOwner) => {
+  //   Organization.find({
+  //     $and: [
+  //       { owner: { $ne: req.session.user._id } },
+  //       { members: { $in: req.session.user._id } },
+  //     ],
+  //   }).then((whereIAmNotOwner) => {
+  //     console.log("owner: ", whereIamOwner);
+  //     console.log("nicht owner: ", whereIAmNotOwner);
+  //     res.render("my-orgs", { owner: whereIamOwner, member: whereIAmNotOwner });
+  //   });
+  // });
 });
+// router.get("/my-organization", isLoggedMiddleware, (req, res) => {
+//   // EVERYONE WHERE I AM THE OWNER
+//   Organization.find({ owner: req.session.user._id }).then((whereIamOwner) => {
+//     Organization.find({
+//       $and: [
+//         { owner: { $ne: req.session.user._id } },
+//         { members: { $in: req.session.user._id } },
+//       ],
+//     }).then((whereIAmNotOwner) => {
+//       console.log("owner: ", whereIamOwner);
+//       console.log("nicht owner: ", whereIAmNotOwner);
+//       res.render("my-orgs", { owner: whereIamOwner, member: whereIAmNotOwner });
+//     });
+//   });
+// });
 
 router.get("/new", isLoggedMiddleware, (req, res) => {
   res.render("new-organization", {
